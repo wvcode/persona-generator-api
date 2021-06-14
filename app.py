@@ -13,6 +13,14 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
 
+_ORIGINS = [
+        "http://localhost",
+        "http://localhost:8080",
+        "http://localhost:8000",
+        "http://localhost:4200",
+    ]
+
+
 
 app = FastAPI(title='API Model')
 app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -27,7 +35,7 @@ async def remove_file_before_leave(request: Request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=app_config.get_cors_origins(),
+    allow_origins=_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
