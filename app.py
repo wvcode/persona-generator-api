@@ -10,6 +10,9 @@ import requests
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 app = FastAPI(title='API Model')
 app.add_middleware(GZipMiddleware, minimum_size=1000)
@@ -22,6 +25,13 @@ async def remove_file_before_leave(request: Request, call_next):
   response.headers['X-Process-Time'] = str(process_time - start_time)
   return response
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=app_config.get_cors_origins(),
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/', tags=['Version 1'])
 async def get_main():
