@@ -47,5 +47,15 @@ async def get_main():
   response = requests.get('https://randomuser.me/api/')
   return response.json()
 
+@app.get('/xkcd/{id}', tags=['XKCD'])
+async def get_comic(id: str):
+  response = None
+  if id == 'last':
+    response = requests.get('http://xkcd.com/info.0.json')
+  elif id.isnumeric():
+    response = requests.get('http://xkcd.com/{0}/info.0.json'.format(id))
+  return response.json()
+
+
 if __name__ == '__main__':
  uvicorn.run(app, host='0.0.0.0', port=8000, debug=True)
